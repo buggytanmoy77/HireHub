@@ -6,6 +6,7 @@ const authRoutes = require("./routes/auth.routes");
 const profileRoutes = require("./routes/profile.routes");
 const resumeRoutes = require('./routes/resume.routes');
 const AIRoutes = require('./routes/ai.routes');
+const jobRoutes = require("./routes/job.routes");
 const app = express();
 
 app.use(
@@ -28,4 +29,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 app.use('/api/resume', resumeRoutes);
 app.use('/api/ai', AIRoutes);
+app.use("/api/jobs", jobRoutes);
+
 module.exports = app;
