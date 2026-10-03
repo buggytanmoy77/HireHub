@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../context/authContext";
+import { useAuth } from "../context/authContext"; 
 
 export default function Signup() {
   const [name, setName] = useState("");
@@ -14,7 +14,7 @@ export default function Signup() {
     e.preventDefault();
     try {
       await signup(name, email, password);
-      navigate("/dashboard");
+      navigate("/login"); 
     } catch (err) {
       setError("Could not sign up — try a different email");
     }

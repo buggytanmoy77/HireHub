@@ -1,0 +1,22 @@
+# dependencies
+node_modules/
+
+# environment variables
+.env
+.env.local
+.env.*.local
+
+# logs
+*.log
+npm-debug.log*
+
+# Prisma
+prisma/migrations/dev.db
+
+# OS/editor junk
+.DS_Store
+.vscode/
+
+# build output (if any gets added later)
+dist/
+build/

@@ -5,6 +5,8 @@ import Home from "./pages/home";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
 import Dashboard from "./pages/dashboard";
+import ResumeUpload from "./pages/resumeupload";
+import Jobs from "./pages/jobs";
 
 export default function App() {
   return (
@@ -22,6 +24,8 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/resume" element={<ProtectedRoute><ResumeUpload /></ProtectedRoute>} />
+          <Route path="/jobs" element={<ProtectedRoute><Jobs /></ProtectedRoute>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
