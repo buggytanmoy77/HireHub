@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import api from "../services/api";
+import JobCard, { JobCardSkeleton } from "../components/jobs/jobCard";
+import { getRecommendedJobs } from "../services/jobs";
 
 export default function Jobs() {
   const [data, setData] = useState(null);
@@ -8,10 +9,9 @@ export default function Jobs() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    api
-      .get("/jobs/recommended")
+    getRecommendedJobs()
       .then((res) => {
-        setData(res.data);
+        setData(res);
         setStatus("ready");
       })
       .catch((err) => {
@@ -24,24 +24,53 @@ export default function Jobs() {
       });
   }, []);
 
-  if (status === "loading") return <p>Finding jobs that match your resume...</p>;
-
-  if (status === "no-resume") {
+  if (status === "loading") {
     return (
-      <div>
-        <p>You haven't uploaded a resume yet.</p>
-        <Link to="/resume">Upload your resume</Link>
+      <div className="shell page-pad">
+        <div className="page-head">
+          <h1>Your recommended jobs</h1>
+          <p className="lede">Finding jobs that match your resume…</p>
+        </div>
+        <div className="job-grid">
+          {Array.from({ length: 6 }, (_, i) => <JobCardSkeleton key={i} />)}
+        </div>
       </div>
     );
   }
 
-  if (status === "error") return <p>{error}</p>;
+  if (status === "no-resume") {
+    return (
+      <div className="shell page-pad">
+        <div className="empty-state">
+          <h3>You haven't uploaded a resume yet</h3>
+          <p className="muted">Upload one to get personalized job recommendations.</p>
+          <Link to="/resume" className="btn btn-primary">Upload your resume</Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (status === "error") {
+    return (
+      <div className="shell page-pad">
+        <div className="empty-state">
+          <h3>Couldn't load recommendations</h3>
+          <p className="muted">{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   const { roles, totalJobs, jobs } = data;
 
   return (
     <div className="shell page-pad">
-      <h2>Suggested roles based on your resume</h2>
+      <div className="page-head">
+        <h1>Your recommended jobs</h1>
+        <p className="lede">Based on your resume, these roles are a strong fit.</p>
+      </div>
+
+      <h2 className="subhead">Suggested roles</h2>
       <ul className="roles-list">
         {roles.map((r, idx) => (
           <li className="role-item" key={r.role || idx}>
@@ -51,16 +80,9 @@ export default function Jobs() {
         ))}
       </ul>
 
-      <h3>{totalJobs} jobs found</h3>
-      <div className="jobs-list">
-        {jobs.map((job) => (
-          <div className="job-item" key={job.id || job.url}>
-            <h4>{job.title}</h4>
-            <p className="job-meta">{job.company} — {job.location}{job.salary ? ` · ${job.salary}` : ""}</p>
-            <p className="muted">{job.description}</p>
-            <a href={job.url} target="_blank" rel="noopener noreferrer" className="view-link">View job →</a>
-          </div>
-        ))}
+      <h2 className="subhead">{totalJobs} jobs found</h2>
+      <div className="job-grid">
+        {jobs.map((job) => <JobCard key={job.id || job.url} job={job} />)}
       </div>
     </div>
   );
