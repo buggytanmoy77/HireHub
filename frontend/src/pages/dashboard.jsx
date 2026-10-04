@@ -1,16 +1,13 @@
-// src/pages/Dashboard.jsx
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 
 export default function Dashboard() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   return (
-    <div>
+    <div className="shell page-pad">
       <h1>Welcome, {user?.name}</h1>
-      <nav>
-        <Link to="/resume">Upload Resume</Link>
-      </nav>
-      <button onClick={() => logout()}>Log Out</button>
+      <p className="muted">Upload your resume to get matched roles and explanations.</p>
+      <Link to="/resume" className="btn btn-primary">Upload Resume</Link>
     </div>
   );
 }

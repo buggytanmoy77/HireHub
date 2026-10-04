@@ -20,15 +20,15 @@ export default function Login() {
   }
 
   return (
-    <div>
+    <div className="shell page-pad">
       <h2>Log In</h2>
-      <form onSubmit={handleSubmit}>
-        <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-        <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" />
-        {error && <p>{error}</p>}
-        <button type="submit">Log In</button>
+      <form className="form" onSubmit={handleSubmit}>
+        <input className="input" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+        <input className="input" value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" />
+        {error && <p className="error-text">{error}</p>}
+        <button type="submit" className="btn btn-primary">Log In</button>
       </form>
-      <p>No account? <Link to="/signup">Sign up</Link></p>
+      <p className="muted">No account? <Link to="/signup">Sign up</Link></p>
     </div>
   );
 }

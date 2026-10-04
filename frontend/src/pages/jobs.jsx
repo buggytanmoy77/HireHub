@@ -40,29 +40,28 @@ export default function Jobs() {
   const { roles, totalJobs, jobs } = data;
 
   return (
-    <div>
+    <div className="shell page-pad">
       <h2>Suggested roles based on your resume</h2>
-      <ul>
+      <ul className="roles-list">
         {roles.map((r, idx) => (
-          <li key={r.role || idx}>
+          <li className="role-item" key={r.role || idx}>
             <strong>{r.role}</strong>
-            {r.reason && <span> — {r.reason}</span>}
+            {r.reason && <span className="reason">{r.reason}</span>}
           </li>
         ))}
       </ul>
 
       <h3>{totalJobs} jobs found</h3>
-      {jobs.map((job) => (
-        <div key={job.id || job.url}>
-          <h4>{job.title}</h4>
-          <p>{job.company} — {job.location}</p>
-          {job.salary && <p>{job.salary}</p>}
-          <p>{job.description}</p>
-          <a href={job.url} target="_blank" rel="noopener noreferrer">
-            View job
-          </a>
-        </div>
-      ))}
+      <div className="jobs-list">
+        {jobs.map((job) => (
+          <div className="job-item" key={job.id || job.url}>
+            <h4>{job.title}</h4>
+            <p className="job-meta">{job.company} — {job.location}{job.salary ? ` · ${job.salary}` : ""}</p>
+            <p className="muted">{job.description}</p>
+            <a href={job.url} target="_blank" rel="noopener noreferrer" className="view-link">View job →</a>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

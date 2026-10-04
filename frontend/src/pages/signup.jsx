@@ -21,16 +21,16 @@ export default function Signup() {
   }
 
   return (
-    <div>
+    <div className="shell page-pad">
       <h2>Sign Up</h2>
-      <form onSubmit={handleSubmit}>
-        <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" />
-        <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-        <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" />
-        {error && <p>{error}</p>}
-        <button type="submit">Sign Up</button>
+      <form className = "form" onSubmit={handleSubmit}>
+        <input className="input"  value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" />
+        <input className="input" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+        <input className="input" value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" />
+        {error && <p className="error-text">{error}</p>}
+        <button type="submit" className="btn btn-primary">Sign Up</button>
       </form>
-      <p>Already have an account? <Link to="/login">Log in</Link></p>
+      <p className="muted">Already have an account? <Link to="/login">Log in</Link></p>
     </div>
   );
 }

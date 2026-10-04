@@ -28,19 +28,18 @@ export default function ResumeUpload() {
   }
 
   return (
-    <div>
+    <div className="shell page-pad">
       <h2>Upload Your Resume</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="file"
-          accept=".pdf"
-          onChange={(e) => setFile(e.target.files[0])}
-        />
-        <button type="submit" disabled={!file || status === "uploading"}>
-          {status === "uploading" ? "Uploading..." : "Upload"}
-        </button>
-      </form>
-      {error && <p>{error}</p>}
+      <div className="upload-box">
+        <form onSubmit={handleSubmit}>
+          <input type="file" accept=".pdf" onChange={(e) => setFile(e.target.files[0])} />
+          <br /><br />
+          <button type="submit" className="btn btn-primary" disabled={!file || status === "uploading"}>
+            {status === "uploading" ? "Uploading..." : "Upload"}
+          </button>
+        </form>
+      </div>
+      {error && <p className="error-text">{error}</p>}
     </div>
   );
 }
