@@ -1,3 +1,29 @@
+const he = require("he");
+
+/**
+ * Clean HTML / HTML entities from a job description.
+ *
+ * Jooble snippets can contain things like:
+ * &nbsp;
+ * <b>Intern</b>
+ * &lt;b&gt;Intern&lt;/b&gt;
+ */
+const cleanDescription = (description = "") => {
+  if (!description || typeof description !== "string") {
+    return "";
+  }
+
+  return he
+    .decode(description)
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+};
+
+
+/**
+ * Search jobs directly using Jooble.
+ */
 const searchJobs = async ({
   keywords,
   location = "India",
@@ -16,9 +42,11 @@ const searchJobs = async ({
 
   const response = await fetch(url, {
     method: "POST",
+
     headers: {
       "Content-Type": "application/json",
     },
+
     body: JSON.stringify({
       keywords,
       location,
@@ -48,7 +76,10 @@ const searchJobs = async ({
       location: job.location,
       salary: job.salary,
       type: job.type,
-      description: job.snippet,
+
+      // Clean Jooble HTML/HTML entities here
+      description: cleanDescription(job.snippet),
+
       source: job.source,
       url: job.link,
       updated: job.updated,
@@ -57,7 +88,7 @@ const searchJobs = async ({
 };
 
 
-/*
+/**
  * Search jobs using multiple AI-generated queries.
  *
  * Example:
@@ -79,7 +110,7 @@ const searchJobsForQueries = async ({
     throw new Error("At least one job search query is required");
   }
 
-  /*
+  /**
    * Remove:
    * - invalid queries
    * - empty queries
@@ -97,7 +128,7 @@ const searchJobsForQueries = async ({
     ),
   ];
 
-  /*
+  /**
    * Limit the number of Jooble API calls.
    */
   const selectedQueries = uniqueQueries.slice(0, maxQueries);
@@ -106,12 +137,12 @@ const searchJobsForQueries = async ({
     throw new Error("No valid job search queries found");
   }
 
-  /*
+  /**
    * Search all queries.
    *
-   * Promise.allSettled is used instead of Promise.all so that
-   * if one Jooble request fails, the other searches can still
-   * return results.
+   * Promise.allSettled is used so that if one
+   * Jooble request fails, the other searches
+   * can still return results.
    */
   const results = await Promise.allSettled(
     selectedQueries.map((query) =>
@@ -126,7 +157,7 @@ const searchJobsForQueries = async ({
 
   const allJobs = [];
 
-  /*
+  /**
    * Collect successful results.
    */
   results.forEach((result, index) => {
@@ -140,13 +171,13 @@ const searchJobsForQueries = async ({
     }
   });
 
-  /*
+  /**
    * Remove duplicate jobs.
    *
-   * Prefer Jooble's job ID.
-   * If ID isn't available, use URL.
-   * If neither exists, create a fallback key using
-   * title + company + location.
+   * Prefer:
+   * 1. Jooble job ID
+   * 2. Job URL
+   * 3. title + company + location
    */
   const uniqueJobs = [];
   const seen = new Set();

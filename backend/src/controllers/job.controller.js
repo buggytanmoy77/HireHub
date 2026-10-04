@@ -65,6 +65,48 @@ const getRecommendedJobs = async (req, res) => {
   }
 };
 
+const getTrendingJobs = async (req, res) => {
+  try {
+
+    // Popular job categories
+    const trendingQueries = [
+      "Software Engineer",
+      "Backend Developer",
+      "Data Engineer",
+      "AI Engineer",
+      "DevOps Engineer",
+      "Cloud Engineer",
+      "Full Stack Developer",
+      "Machine Learning Engineer",
+    ];
+
+    const jobResults = await searchJobsForQueries({
+      queries: trendingQueries,
+      location: "India",
+      maxQueries: 8,
+      resultOnPage: 10,
+    });
+
+    return res.status(200).json({
+      message: "Trending jobs fetched successfully",
+
+      totalJobs: jobResults.totalCount,
+
+      jobs: jobResults.jobs,
+    });
+
+  } catch (error) {
+    console.error("Trending jobs error:", error);
+
+    return res.status(500).json({
+      message: "Failed to fetch trending jobs",
+    });
+  }
+};
+
+
+
 module.exports = {
   getRecommendedJobs,
+  getTrendingJobs
 };
