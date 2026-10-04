@@ -1,3 +1,5 @@
+// src/pages/Dashboard.jsx
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 
 export default function Dashboard() {
@@ -5,7 +7,10 @@ export default function Dashboard() {
   return (
     <div>
       <h1>Welcome, {user?.name}</h1>
-      <button onClick={logout}>Log Out</button>
+      <nav>
+        <Link to="/resume">Upload Resume</Link>
+      </nav>
+      <button onClick={() => logout()}>Log Out</button>
     </div>
   );
 }

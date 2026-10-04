@@ -43,8 +43,11 @@ export default function Jobs() {
     <div>
       <h2>Suggested roles based on your resume</h2>
       <ul>
-        {roles.map((role) => (
-          <li key={role}>{role}</li>
+        {roles.map((r, idx) => (
+          <li key={r.role || idx}>
+            <strong>{r.role}</strong>
+            {r.reason && <span> — {r.reason}</span>}
+          </li>
         ))}
       </ul>
 
